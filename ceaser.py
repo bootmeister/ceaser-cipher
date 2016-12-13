@@ -94,13 +94,17 @@ while go_on is True:
 if way is False:
     count = 0
     end_results = []
-    while word_count >= 1:
+    word_num = 0
+    word_count -= 1
+    while word_count >= word_num:
+        end_results.append([])
+        print(end_results, word_num, count)
         for result in results:
-            end_results.append([])
-            end_results[count].append(result[count])
+            end_results[word_num].append([])
+            end_results[word_num][count].append(result[count])
             print(result[count])
             count += 1
-        word_count -= 1
+        word_num += 1
     for result in end_results:
         print(" ".join(result))
         num += 1
