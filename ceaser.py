@@ -1,15 +1,20 @@
 lang = input("""Ingilicce: EN
-             Turkce: TR\n"""
+             Turkce: TR
+             Kendi alfabeni tanimlamak icin: CUS
+             giriniz\n""")
+if lang == "EN":
+    alph = "abcdefghijklmnopqrstuvwxyz"
+elif lang == "TR":
+    alph = "abcçdefgğhıijklmnoöprsştuüvyz"
+if lang == "CUS":
+    alph = input("Alfabenizi giriniz:\n")
+
 def shift(word, num, way):
-    if lang == "EN":
-        alph = "abcdefghijklmnopqrstuvwxyz"
-    elif lang == "TR":
-        alph = "abc1defg2h3ijklmno4prs5tyvu6vyz"
-    indices = [alph.index(char) + num for char in word]
     if way is True:
-        indices = [index - (index // len(alph)) * len(alph) if index >= len(alph) else index for index in indices]
+        indices = [alph.index(char) + num for char in word]
     elif way is False:
-        indices = [index + (index // len(alph)) * len(alph) if index >= len(alph) else index for index in indices]
+        indices = [alph.index(char) - num for char in word]
+    indices = [index - (index // len(alph)) * len(alph) if index >= len(alph) else index for index in indices]
 
     crypto = "".join([alph[index] for index in indices])
     return crypto
@@ -56,33 +61,47 @@ if way is True:
                 break
             except ValueError:
                 print("Lutfen sadece sayi giriniz!")
+    print(" ".join(result))
 
-if way is False:
-    print("""Seazar Sifresi Cozme:
-          Sifreli Kelimeyi giriniz
-          Bilgisayar muhtemel sonuclari gosterecektir""")
 
-    while go_on is True:
-     while True:
-        num = input("Sayi: ")
-        try:
-            num = int(num)
-            break
-        except ValueError:
-            print("Lutfen bir sayi giriniz\n")
+results = []
+word_num = 0
+word_count = 0
+go_on = True
+while go_on is True:
+    if way is False:
+        print("""Seazar Sifresi Cozme:
+              Sifreli Kelimeyi giriniz
+             Bilgisayar muhtemel sonuclari gosterecektir""")
 
-       word = "123"
-        while not isalpha(word):
-            word = input("Kelime: ")
-            if isalpha(word) == False:
-                print("Lutfen kelimenizde sayi ya da ozel karakter kullanmayiniz!")
+        num = 1
+        word = input("Kelime: ")
         word = word.lower()
-        result.append(shift(word, num, way))
+        results.append([] * len(alph))
+        while num <= len(alph):
+            results[word_num].append(shift(word, num, way))
+            num += 1
         while True:
             try:
                 go_on = bool(int(input("Devam etmek icin herhangi bir sayiya,\nDurmak icin 0a basiniz: ")))
+                word_count += 1
                 break
             except ValueError:
                 print("Lutfen sadece sayi giriniz!")
+        num = 1
+        word_num += 1
+    else: break
+if way is False:
+    count = 0
+    end_results = []
+    while word_count >= 1:
+        for result in results:
+            end_results.append([])
+            end_results[count].append(result[count])
+            print(result[count])
+            count += 1
+        word_count -= 1
+    for result in end_results:
+        print(" ".join(result))
+        num += 1
 
-print(" ".join(result))
